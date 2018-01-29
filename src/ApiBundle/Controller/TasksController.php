@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace ApiBundle\Controller;
 
-use AppBundle\Entity\Task;
+use ApiBundle\Entity\Task;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
