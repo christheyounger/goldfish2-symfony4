@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\Entity;
+namespace StorageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Task
  *
  * @ORM\Table(name="task")
- * @ORM\Entity(repositoryClass="ApiBundle\Repository\TaskRepository")
+ * @ORM\Entity(repositoryClass="StorageBundle\Repository\TaskRepository")
  */
 class Task
 {

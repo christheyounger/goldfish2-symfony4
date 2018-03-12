@@ -2,7 +2,7 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\Entity\Task;
+use StorageBundle\Entity\Task;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
