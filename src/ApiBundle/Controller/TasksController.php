@@ -17,6 +17,8 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 {
 	private $doctrine;
 
+	private $router;
+
 	private $repository;
 
 
@@ -24,6 +26,7 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	{
 		parent::setContainer($container);
 		$this->doctrine = $container->get('doctrine.orm.default_entity_manager', null);
+		$this->router = $container->get('router', null);
 		$this->repository = $this->doctrine->getRepository(Task::class);
 	}
 	
@@ -58,7 +61,7 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 		}	
 		$this->doctrine->persist($task);
 		$this->doctrine->flush();
-		$location = $this->get('router')->generate('get_tasks', ['task' => $task->getId()]);
+		$location = $this->router->generate('get_tasks', ['task' => $task->getId()]);
 		return $this->view([])->setHeader('Location', $location)->setStatusCode(201);
 		
 	}
