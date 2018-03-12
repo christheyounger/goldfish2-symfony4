@@ -1,4 +1,6 @@
-Symfony Standard Edition
+Goldfish 2 - Symfony 3
+![build status](https://travis-ci.org/darkbluesun/goldfish2-symfony3.svg?branch=master)
+[![codecov](https://codecov.io/gh/darkbluesun/goldfish2-symfony3/branch/master/graph/badge.svg)](https://codecov.io/gh/darkbluesun/goldfish2-symfony3)
 ========================
 
 Welcome to the Symfony Standard Edition - a fully-functional Symfony
