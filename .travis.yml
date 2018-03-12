@@ -1,4 +1,6 @@
 language: php
 php:
   - '7.1'
-before_script: composer install
+install: composer install
+after_success:
+    - bash <(curl -s https://codecov.io/bash) -t 57dbaed3-24d6-4af2-8eb9-ad55150be9b6
