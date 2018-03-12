@@ -7,6 +7,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -14,13 +15,25 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class TasksController extends FOSRestController implements ClassResourceInterface
 {
+	private $doctrine;
+
+	private $repository;
+
+
+	public function setContainer(?ContainerInterface $container = null)
+	{
+		parent::setContainer($container);
+		$this->doctrine = $container->get('doctrine.orm.default_entity_manager', null);
+		$this->repository = $this->doctrine->getRepository(Task::class);
+	}
+	
 	/** 
 	 * @ApiDoc(resource=true, output="StorageBundle\Entity\Task")
 	 * @FOS\View()
 	 */
 	public function cgetAction()
 	{
-		return $this->getDoctrine()->getRepository(Task::class)->findAll();
+		return $this->repository->findAll();
 	}
 
 	/**
@@ -42,9 +55,9 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	{
 		if (count($validationErrors)) {
 			return $this->view(['errors' => $validationErrors])->setStatusCode(400);
-		}
-		$this->getDoctrine()->getManager()->persist($task);
-		$this->getDoctrine()->getManager()->flush();
+		}	
+		$this->doctrine->persist($task);
+		$this->doctrine->flush();
 		$location = $this->get('router')->generate('get_tasks', ['task' => $task->getId()]);
 		return $this->view([])->setHeader('Location', $location)->setStatusCode(201);
 		
@@ -57,8 +70,8 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	 */
 	public function putAction(Task $task)
 	{
-		$task = $this->getDoctrine()->getManager()->merge($task);
-		$this->getDoctrine()->getManager()->flush();
+		$task = $this->doctrine->merge($task);
+		$this->doctrine->flush();
 	}
 
 	/**
@@ -66,7 +79,7 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	 */
 	public function deleteAction(Task $task)
 	{
-		$this->getDoctrine()->getManager()->remove($task);
-		$this->getDoctrine()->getManager()->flush();
+		$this->doctrine->remove($task);
+		$this->doctrine->flush();
 	}
 }
