@@ -23,7 +23,7 @@ class TasksControllerTest extends \PHPUnit\Framework\TestCase
 		$this->repository = $this->createMock(StorageBundle\Repository\TaskRepository::class);
 		$this->doctrine->expects(static::once())->method('getRepository')->willReturn($this->repository);
 		$this->controller = new ApiBundle\Controller\TasksController();
-		$this->router = $this->getMock(RouterInterface::class);
+		$this->router = $this->createMock(RouterInterface::class);
 		$map = [
 			['doctrine.orm.default_entity_manager', null, $this->doctrine],
 			['router', null, $this->router],
@@ -51,7 +51,7 @@ class TasksControllerTest extends \PHPUnit\Framework\TestCase
 	public function testPost()
 	{
 		$task = new StorageBundle\Entity\Task();
-		$errors = $this->getMock(ConstraintViolationListInterface::class);
+		$errors = $this->createMock(ConstraintViolationListInterface::class);
 		$this->doctrine->expects(static::once())->method('persist')->with($task);
 		$this->controller->postAction($task, $errors);
 	}
