@@ -6,6 +6,7 @@ use StorageBundle\Entity\Task;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -14,7 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class TasksController extends FOSRestController implements ClassResourceInterface
 {
 	/** 
-	 * @ApiDoc(resource=true)
+	 * @ApiDoc(resource=true, output="StorageBundle\Entity\Task")
 	 * @FOS\View()
 	 */
 	public function cgetAction()
@@ -22,13 +23,17 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 		return $this->getDoctrine()->getRepository(Task::class)->findAll();
 	}
 
-	/** @FOS\View() */
+	/**
+	 * @ApiDoc(resource=true, output="StorageBundle\Entity\Task") 
+	 * @FOS\View()
+	 */
 	public function getAction(Task $task)
 	{
 		return $task;
 	}
 	
 	/**
+	 * @ApiDoc(resource=true, input="StorageBundle\Entity\Task")
 	 * @FOS\Post("/tasks")
 	 * @FOS\View()
 	 * @ParamConverter("task", converter="fos_rest.request_body")
@@ -40,10 +45,13 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 		}
 		$this->getDoctrine()->getManager()->persist($task);
 		$this->getDoctrine()->getManager()->flush();
-		return ['id' => $task->getId()];
+		$location = $this->get('router')->generate('get_tasks', ['task' => $task->getId()]);
+		return $this->view([])->setHeader('Location', $location)->setStatusCode(201);
+		
 	}
 	
 	/**
+	 * @ApiDoc(resource=true, input="StorageBundle\Entity\Task")
 	 * @FOS\Put*=("/tasks")
 	 * @ParamConverter("task", converter="fos_rest.request_body")
 	 */
@@ -53,6 +61,9 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 		$this->getDoctrine()->getManager()->flush();
 	}
 
+	/**
+	 * @ApiDoc(resource=true)
+	 */
 	public function deleteAction(Task $task)
 	{
 		$this->getDoctrine()->getManager()->remove($task);

@@ -3,6 +3,7 @@
 namespace StorageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serial;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,6 +19,7 @@ class Task
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @Serial\ReadOnly()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -25,21 +27,21 @@ class Task
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $completed;
+    private $completed = false;
 
     /**
      * @var string
      * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255)
      */
-    private $title;
+    private $title = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text")
      */
-    private $description;
+    private $description = '';
 
     /**
      * @var int
