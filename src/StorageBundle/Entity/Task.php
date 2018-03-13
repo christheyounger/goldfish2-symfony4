@@ -137,7 +137,7 @@ class Task
      *
      * @return Task
      */
-    public function setTime($time)
+    public function setTime(int $time)
     {
         $this->time = $time;
 
