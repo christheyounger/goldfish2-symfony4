@@ -56,6 +56,17 @@ class TasksControllerTest extends \PHPUnit\Framework\TestCase
 		$this->controller->postAction($task, $errors);
 	}
 
+	public function testPostBad()
+	{
+		$task = new StorageBundle\Entity\Task();
+		$errors = $this->createMock(ConstraintViolationListInterface::class);
+		$errors->expects(static::once())->method('count')->willReturn(2);
+		$return = $this->controller->postAction($task, $errors);
+		$data = $return->getData();
+		$this->assertArrayHasKey('errors', $data, 'reports there were errors');
+		$this->assertEquals($errors, $data['errors'], 'reports actuall errors');
+	}
+
 	public function testPut()
 	{
 		$task = new StorageBundle\Entity\Task();
