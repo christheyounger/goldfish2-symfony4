@@ -4,6 +4,7 @@ namespace ApiBundle\Controller;
 
 use StorageBundle\Entity\Task;
 use FOS\RestBundle\Controller\FOSRestController;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use FOS\RestBundle\Controller\Annotations as FOS;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Swagger\Annotations as SWG;
 
 class TasksController extends FOSRestController implements ClassResourceInterface
 {
@@ -31,7 +32,7 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	}
 	
 	/** 
-	 * @ApiDoc(resource=true, output="StorageBundle\Entity\Task")
+	 * @SWG\Response(response=200, description="Task", @SWG\Schema(@Model(type=Task::class)))
 	 * @FOS\View()
 	 */
 	public function cgetAction()
@@ -40,7 +41,8 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	}
 
 	/**
-	 * @ApiDoc(resource=true, output="StorageBundle\Entity\Task") 
+	 * @SWG\Response(response=200, description="Task", @SWG\Schema(@Model(type=Task::class)))
+	 * @SWG\Parameter(name="task", description="Task ID", in="path", type="integer")
 	 * @FOS\View()
 	 */
 	public function getAction(Task $task)
@@ -49,7 +51,8 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	}
 	
 	/**
-	 * @ApiDoc(resource=true, input="StorageBundle\Entity\Task")
+	 * @SWG\Response(response=204, description="Task")
+	 * @SWG\Parameter(name="task", in="body", @SWG\Schema(@Model(type=Task::class)))
 	 * @FOS\Post("/tasks")
 	 * @FOS\View()
 	 * @ParamConverter("task", converter="fos_rest.request_body")
@@ -67,7 +70,8 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	}
 	
 	/**
-	 * @ApiDoc(resource=true, input="StorageBundle\Entity\Task")
+	 * @SWG\Response(response=204, description="Task")
+	 * @SWG\Parameter(name="task", in="body", @SWG\Schema(@Model(type=Task::class)))
 	 * @FOS\Put*=("/tasks")
 	 * @ParamConverter("task", converter="fos_rest.request_body")
 	 */
@@ -78,7 +82,7 @@ class TasksController extends FOSRestController implements ClassResourceInterfac
 	}
 
 	/**
-	 * @ApiDoc(resource=true)
+	 * @SWG\Response(response=204, description="Task")
 	 */
 	public function deleteAction(Task $task)
 	{

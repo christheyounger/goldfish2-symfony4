@@ -95,11 +95,11 @@ sensio_framework_extra:
     request: { converters: true }
 
 nelmio_api_doc:
-    sandbox:
-        body_format:
-            formats:
-                - json
-            default_format: json
+    documentation:
+        info:
+            title: Goldfish
+            description: A sample Symfony3 task app
+            version: 2.0.0
 
 nelmio_cors:
     paths:
