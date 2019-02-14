@@ -19,6 +19,12 @@ This is a sample REST API for a task manager
 
 `bin/console server:run`
 
+## Routes
+
+`/api/doc` API documentation
+
+`/api/tasks` Actual tasks API
+
 ## Tests
 
 `bin/phpunit`
