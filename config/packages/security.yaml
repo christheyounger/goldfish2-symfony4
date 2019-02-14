@@ -9,19 +9,26 @@ security:
         App\Entity\User: sha512
 
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        api:
-            pattern: ^/(api|oauth|login_check)
-            user_checker: security.user_checker
+    firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
             form_login:
                 login_path: fos_user_security_login
                 check_path: fos_user_security_check
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
-            logout:       true
-            anonymous:    false
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            provider: fos_userbundle
+            stateless:  true
+            anonymous:  true # note that anonymous access is now enabled
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
