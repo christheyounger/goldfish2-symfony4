@@ -3,6 +3,7 @@
 namespace tests\App\Controller;
 
 use App;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -57,6 +58,19 @@ class TasksControllerTest extends \PHPUnit\Framework\TestCase
 		$data = $return->getData();
 		$this->assertArrayHasKey('errors', $data, 'reports there were errors');
 		$this->assertEquals($errors, $data['errors'], 'reports actuall errors');
+	}
+
+	public function testPatch()
+	{
+		$this->doctrine->expects(static::exactly(2))->method('flush');
+		$task = new App\Entity\Task();
+		$task->setCompleted(false);
+		$request = new Request(['action' => 'complete']);
+		$this->controller->patchAction($task, $request);
+		$this->assertTrue($task->isCompleted());
+		$request = new Request(['action' => 'uncomplete']);
+		$this->controller->patchAction($task, $request);
+		$this->assertFalse($task->isCompleted());
 	}
 
 	public function testPut()

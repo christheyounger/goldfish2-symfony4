@@ -71,6 +71,24 @@ class TasksController extends AbstractFOSRestController implements ClassResource
 	}
 	
 	/**
+	 * @FOS\RequestParam(name="action", requirements="complete|uncomplete")
+	 */
+	public function patchAction(Task $task, Request $request)
+	{
+		$action = $request->get('action');
+		switch ($action) {
+			case "complete":
+				$task->setCompleted(true);
+				$this->doctrine->flush();
+				break;
+			case "uncomplete":
+				$task->setCompleted(false);
+				$this->doctrine->flush();
+				break;
+		}
+	}
+	
+	/**
 	 * @SWG\Response(response=204, description="Task")
 	 * @SWG\Parameter(name="task", in="body", @SWG\Schema(ref=@Model(type=Task::class)))
 	 * @FOS\Put*=("/tasks")
